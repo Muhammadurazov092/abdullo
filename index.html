@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ULTIMATE GAME CENTER — Checkers, Chess & Tetris</title>
+
+  <!-- Frameworks & Libraries: Tailwind CSS, DaisyUI, Bootstrap 5, jQuery, Morris.js, Chess.js -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css" />
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+
+  
+  <link rel="stylesheet" href="style.css" />
+
+</head>
+<body>
+  <!-- TOP NAVIGATION BAR -->
+  <nav class="glass-panel sticky top-0 z-30 px-4 py-3">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3 cursor-pointer" data-view="home">
+        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-sky-400 via-purple-500 to-pink-500 flex items-center justify-center text-white font-black text-xl shadow-lg">
+          <i class="fa-solid fa-gamepad"></i>
+        </div>
+        <div>
+          <span class="text-xl md:text-2xl font-black tracking-tight brand-gradient">ULTIMATE GAME CENTER</span>
+          <div class="text-[11px] opacity-70 -mt-1">Checkers • Chess • Tetris Hub</div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-1.5 md:gap-2">
+        <button data-view="home" class="btn btn-sm btn-ghost nav-tab-btn">Bosh sahifa</button>
+        <button data-view="checkers" class="btn btn-sm btn-ghost nav-tab-btn">Shashka</button>
+        <button data-view="chess" class="btn btn-sm btn-ghost nav-tab-btn">Shahmat</button>
+        <button data-view="tetris" class="btn btn-sm btn-ghost nav-tab-btn">Tetris</button>
+        <button data-view="profile" class="btn btn-sm btn-outline btn-info nav-tab-btn"><i class="fa-solid fa-user"></i> Profil</button>
+        <button data-view="leaderboard" class="btn btn-sm btn-outline btn-warning nav-tab-btn"><i class="fa-solid fa-crown"></i> Reyting</button>
+        <button data-view="settings" class="btn btn-sm btn-outline btn-secondary nav-tab-btn"><i class="fa-solid fa-gear"></i> Sozlamalar</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto p-4 md:p-6">
+
+    <!-- ================= 1. HOME PAGE ================= -->
+    <section id="view-home" class="app-view space-y-6">
+      <!-- Hero Banner -->
+      <div class="glass-panel rounded-3xl p-6 md:p-8 flex flex-col lg:flex-row items-center justify-between gap-6">
+        <div class="space-y-3 max-w-2xl">
+          <div class="badge badge-secondary badge-outline font-bold">SEASON 2026 • ARCADE & STRATEGY</div>
+          <h1 class="text-3xl md:text-5xl font-black leading-tight">
+            Bir joyda <span class="brand-gradient">3 ta afsonaviy o‘yin</span> va jonli reyting
+          </h1>
+          <p class="text-sm md:text-base opacity-80">
+            Shashka, professional Shahmat va tezkor Tetris o‘yinlarini kompyuter yoki telefonda o‘ynang, ball to‘plang va yutuqlar oching.
+          </p>
+          <div class="flex flex-wrap gap-3 pt-2">
+            <button data-view="checkers" class="btn btn-primary gap-2 font-bold"><i class="fa-solid fa-chess-board"></i> Shashka boshlash</button>
+            <button data-view="chess" class="btn btn-secondary gap-2 font-bold"><i class="fa-solid fa-chess-knight"></i> Shahmat boshlash</button>
+            <button data-view="tetris" class="btn btn-accent gap-2 font-bold"><i class="fa-solid fa-cubes"></i> Tetris boshlash</button>
+          </div>
+        </div>
+
+        <!-- Quick Profile Card -->
+        <div class="glass-panel rounded-2xl p-5 w-full lg:w-80 space-y-3">
+          <div class="flex items-center gap-3">
+            <div id="home-avatar" class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-500 to-cyan-400 flex items-center justify-center text-3xl">😎</div>
+            <div>
+              <div id="home-username" class="font-extrabold text-lg">PlayerOne</div>
+              <div class="text-xs opacity-75">Reyting: <span id="home-rank" class="text-amber-400 font-bold">#4</span> • Ball: <span id="home-score" class="text-sky-400 font-bold">1250</span></div>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-2 text-center bg-black/20 p-2.5 rounded-xl text-xs">
+            <div><div class="opacity-60">O‘yinlar</div><b id="home-played">0</b></div>
+            <div><div class="opacity-60">G‘alaba</div><b id="home-wins" class="text-emerald-400">0</b></div>
+            <div><div class="opacity-60">Rekord</div><b id="home-best" class="text-amber-300">0</b></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 Game Catalog Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass-panel game-card rounded-3xl p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-2xl"><i class="fa-solid fa-circle-dot"></i></span>
+              <span class="badge badge-primary">PvP + 3 AI</span>
+            </div>
+            <h2 class="text-2xl font-black mt-4">SHASHKA (CHECKERS)</h2>
+            <p class="text-sm opacity-75 mt-2">8x8 doska, majburiy va ketma-ket urish qoidalari, Damka hamda Easy, Medium va Hard AI.</p>
+          </div>
+          <button data-view="checkers" class="btn btn-primary mt-5 w-full font-bold">O‘ynash</button>
+        </div>
+
+        <div class="glass-panel game-card rounded-3xl p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="w-12 h-12 rounded-2xl bg-sky-500/20 text-sky-400 flex items-center justify-center text-2xl"><i class="fa-solid fa-chess-king"></i></span>
+              <span class="badge badge-secondary">CHESS.JS + AI</span>
+            </div>
+            <h2 class="text-2xl font-black mt-4">SHAHMAT (CHESS)</h2>
+            <p class="text-sm opacity-75 mt-2">Rokirovka, en passant, piyoda aylanishi, shaxmat soati, orqaga qaytarish va 3 darajali AI.</p>
+          </div>
+          <button data-view="chess" class="btn btn-secondary mt-5 w-full font-bold">O‘ynash</button>
+        </div>
+
+        <div class="glass-panel game-card rounded-3xl p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="w-12 h-12 rounded-2xl bg-pink-500/20 text-pink-400 flex items-center justify-center text-2xl"><i class="fa-solid fa-layer-group"></i></span>
+              <span class="badge badge-accent">60 FPS CANVAS</span>
+            </div>
+            <h2 class="text-2xl font-black mt-4">TETRIS NEON</h2>
+            <p class="text-sm opacity-75 mt-2">Klassik 7 blok, keyingi blok ko‘rinishi, darajalar, pauza, rekordlar va mobil boshqaruv.</p>
+          </div>
+          <button data-view="tetris" class="btn btn-accent mt-5 w-full font-bold">O‘ynash</button>
+        </div>
+      </div>
+
+      <!-- Statistics (Morris.js) & Daily Leaderboard -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 glass-panel rounded-3xl p-6">
+          <h3 class="text-lg font-extrabold mb-3"><i class="fa-solid fa-chart-column text-sky-400"></i> Haftalik O‘yin Statistikasi</h3>
+          <div id="morris-home-chart" style="height: 230px;"></div>
+        </div>
+
+        <div class="glass-panel rounded-3xl p-6">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-lg font-extrabold"><i class="fa-solid fa-ranking-star text-amber-400"></i> Kunlik Reyting</h3>
+            <button data-view="leaderboard" class="btn btn-xs btn-link">Barchasi</button>
+          </div>
+          <div id="home-mini-leaderboard" class="space-y-2.5"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 2. CHECKERS (SHASHKA) ================= -->
+    <section id="view-checkers" class="app-view hidden space-y-5">
+      <div class="glass-panel rounded-3xl p-5 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 class="text-2xl font-black brand-gradient">SHASHKA (CHECKERS)</h2>
+          <p id="chk-status" class="text-sm opacity-80">Oq donalar yuradi • 2 kishilik yoki AI rejim</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <select id="chk-mode" class="select select-sm select-bordered">
+            <option value="pvp">2 kishilik o‘yin</option>
+            <option value="ai-easy">AI — Easy</option>
+            <option value="ai-medium" selected>AI — Medium</option>
+            <option value="ai-hard">AI — Hard</option>
+          </select>
+          <button id="chk-new" class="btn btn-sm btn-primary">Yangi o‘yin</button>
+          <button id="chk-restart" class="btn btn-sm btn-outline btn-secondary">Qayta boshlash</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        <div class="lg:col-span-2 flex flex-col items-center glass-panel rounded-3xl p-5">
+          <div id="checkers-board" class="board-8x8"></div>
+          <div class="flex gap-6 mt-4 text-sm font-bold">
+            <span>Oq donalar: <b id="chk-count-w" class="text-sky-400">12</b></span>
+            <span>Qora donalar: <b id="chk-count-b" class="text-purple-400">12</b></span>
+          </div>
+        </div>
+
+        <div class="glass-panel rounded-3xl p-5 space-y-3">
+          <h3 class="font-extrabold text-base"><i class="fa-solid fa-clock-rotate-left text-purple-400"></i> Yurishlar tarixi</h3>
+          <ol id="chk-history" class="list-decimal list-inside text-xs space-y-1.5 max-h-80 overflow-y-auto opacity-85"></ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 3. CHESS (SHAHMAT) ================= -->
+    <section id="view-chess" class="app-view hidden space-y-5">
+      <div class="glass-panel rounded-3xl p-5 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 class="text-2xl font-black brand-gradient">SHAHMAT (CHESS)</h2>
+          <p id="chs-status" class="text-sm opacity-80">Oq tomon yurishni boshlaydi</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <select id="chs-mode" class="select select-sm select-bordered">
+            <option value="pvp">2 kishilik rejim</option>
+            <option value="ai-easy">AI — Easy</option>
+            <option value="ai-medium" selected>AI — Medium</option>
+            <option value="ai-hard">AI — Hard</option>
+          </select>
+          <select id="chs-side" class="select select-sm select-bordered">
+            <option value="w" selected>Oq tomon</option>
+            <option value="b">Qora tomon</option>
+          </select>
+          <button id="chs-undo" class="btn btn-sm btn-outline btn-info"><i class="fa-solid fa-rotate-left"></i> Orqaga</button>
+          <button id="chs-restart" class="btn btn-sm btn-secondary">Qayta boshlash</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        <div class="lg:col-span-2 flex flex-col items-center glass-panel rounded-3xl p-5">
+          <!-- Chess Clocks -->
+          <div class="w-full max-w-[460px] flex justify-between items-center mb-3 gap-2">
+            <div class="badge badge-lg bg-slate-800 text-white border-white/20 font-mono py-3 px-4">
+              ♔ Oq soat: <span id="chs-clock-w" class="ml-1 text-emerald-400">05:00</span>
+            </div>
+            <div class="badge badge-lg bg-slate-800 text-white border-white/20 font-mono py-3 px-4">
+              ♚ Qora soat: <span id="chs-clock-b" class="ml-1 text-amber-400">05:00</span>
+            </div>
+          </div>
+
+          <div id="chess-board" class="board-8x8"></div>
+        </div>
+
+        <div class="glass-panel rounded-3xl p-5 space-y-3">
+          <h3 class="font-extrabold text-base"><i class="fa-solid fa-list-ol text-sky-400"></i> Yurishlar tarixi (SAN)</h3>
+          <div id="chs-history" class="text-xs font-mono space-y-1 max-h-80 overflow-y-auto opacity-85"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 4. TETRIS ================= -->
+    <section id="view-tetris" class="app-view hidden space-y-5">
+      <div class="glass-panel rounded-3xl p-5 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 class="text-2xl font-black brand-gradient">TETRIS NEON</h2>
+          <p class="text-sm opacity-80">← → Yurish • ↑ Aylantirish • ↓ Tez tushirish • SPACE Pastga • P Pauza</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button id="tet-pause" class="btn btn-sm btn-warning"><i class="fa-solid fa-pause"></i> Pauza</button>
+          <button id="tet-restart" class="btn btn-sm btn-accent">Restart</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        <div class="lg:col-span-2 flex flex-col items-center glass-panel rounded-3xl p-5">
+          <canvas id="tetris-canvas" width="260" height="520"></canvas>
+
+          <!-- Mobile Touch Buttons -->
+          <div class="grid grid-cols-5 gap-2 mt-4 w-full max-w-sm lg:hidden">
+            <button id="m-tet-left" class="btn btn-sm btn-outline">←</button>
+            <button id="m-tet-right" class="btn btn-sm btn-outline">→</button>
+            <button id="m-tet-rot" class="btn btn-sm btn-primary">↻</button>
+            <button id="m-tet-down" class="btn btn-sm btn-secondary">↓</button>
+            <button id="m-tet-drop" class="btn btn-sm btn-accent">DROP</button>
+          </div>
+        </div>
+
+        <div class="glass-panel rounded-3xl p-5 space-y-4">
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-black/25 p-3 rounded-2xl">
+              <div class="text-xs opacity-65">Ball</div>
+              <div id="tet-score" class="text-2xl font-black text-sky-400">0</div>
+            </div>
+            <div class="bg-black/25 p-3 rounded-2xl">
+              <div class="text-xs opacity-65">Rekord</div>
+              <div id="tet-high" class="text-2xl font-black text-amber-400">0</div>
+            </div>
+            <div class="bg-black/25 p-3 rounded-2xl">
+              <div class="text-xs opacity-65">Daraja</div>
+              <div id="tet-level" class="text-xl font-black text-purple-400">1</div>
+            </div>
+            <div class="bg-black/25 p-3 rounded-2xl">
+              <div class="text-xs opacity-65">Qatorlar</div>
+              <div id="tet-lines" class="text-xl font-black text-emerald-400">0</div>
+            </div>
+          </div>
+
+          <div class="bg-black/25 p-4 rounded-2xl flex flex-col items-center">
+            <div class="text-xs opacity-70 mb-2">Keyingi blok</div>
+            <canvas id="tetris-next-canvas" width="96" height="96"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 5. PROFILE ================= -->
+    <section id="view-profile" class="app-view hidden">
+      <div class="glass-panel rounded-3xl p-6 md:p-8 max-w-4xl mx-auto space-y-6">
+        <h2 class="text-2xl font-black brand-gradient"><i class="fa-solid fa-id-card"></i> Foydalanuvchi Profili</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="form-control">
+            <label class="label"><span class="label-text font-bold">Username</span></label>
+            <input id="prof-username-input" type="text" class="input input-bordered" />
+          </div>
+          <div class="form-control">
+            <label class="label"><span class="label-text font-bold">Avatar tanlash</span></label>
+            <div id="prof-avatars" class="flex gap-2">
+              ${["😎", "🦁", "🐉", "👾", "🚀", "👑"].map(a => `<button type="button" data-av="${a}" class="btn btn-sm prof-av-btn">${a}</button>`).join('')}
+            </div>
+          </div>
+        </div>
+        <button id="prof-save-btn" class="btn btn-primary font-bold">Profilni saqlash</button>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2">
+          <div class="bg-black/20 p-4 rounded-2xl"><div class="text-xs opacity-65">Umumiy ball</div><div id="p-total-score" class="text-xl font-black text-sky-400">0</div></div>
+          <div class="bg-black/20 p-4 rounded-2xl"><div class="text-xs opacity-65">O‘ynalgan</div><div id="p-played" class="text-xl font-black">0</div></div>
+          <div class="bg-black/20 p-4 rounded-2xl"><div class="text-xs opacity-65">G‘alabalar</div><div id="p-wins" class="text-xl font-black text-emerald-400">0</div></div>
+          <div class="bg-black/20 p-4 rounded-2xl"><div class="text-xs opacity-65">Mag‘lubiyat</div><div id="p-losses" class="text-xl font-black text-rose-400">0</div></div>
+        </div>
+
+        <div>
+          <h3 class="font-bold mb-2">Yutuqlar (Achievements)</h3>
+          <div id="p-achievements" class="flex flex-wrap gap-2"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 6. LEADERBOARD ================= -->
+    <section id="view-leaderboard" class="app-view hidden">
+      <div class="glass-panel rounded-3xl p-6 md:p-8 max-w-4xl mx-auto space-y-6">
+        <h2 class="text-2xl font-black brand-gradient"><i class="fa-solid fa-trophy text-amber-400"></i> Eng Yaxshi O‘yinchilar</h2>
+        <div id="top3-podium" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+        <div class="overflow-x-auto">
+          <table class="table table-zebra">
+            <thead><tr><th>#</th><th>O‘yinchi</th><th>G‘alabalar</th><th>Ball</th></tr></thead>
+            <tbody id="leaderboard-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 7. SETTINGS ================= -->
+    <section id="view-settings" class="app-view hidden">
+      <div class="glass-panel rounded-3xl p-6 md:p-8 max-w-3xl mx-auto space-y-5">
+        <h2 class="text-2xl font-black brand-gradient"><i class="fa-solid fa-sliders"></i> Sozlamalar</h2>
+
+        <div class="flex items-center justify-between">
+          <span class="font-bold">Mavzu (Dark / Light Mode)</span>
+          <input id="set-theme-toggle" type="checkbox" class="toggle toggle-primary" />
+        </div>
+
+        <div class="flex items-center justify-between">
+          <span class="font-bold">Ovoz effektlari</span>
+          <input id="set-sound-toggle" type="checkbox" class="toggle toggle-accent" checked />
+        </div>
+
+        <div>
+          <label class="label"><span class="label-text font-bold">Ovoz balandligi</span></label>
+          <input id="set-volume-slider" type="range" min="0" max="1" step="0.05" value="0.6" class="range range-info" />
+        </div>
+
+        <div class="flex items-center justify-between">
+          <span class="font-bold">Animatsiyalar</span>
+          <input id="set-anim-toggle" type="checkbox" class="toggle toggle-secondary" checked />
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="label"><span class="label-text font-bold">Til tanlash</span></label>
+            <select id="set-lang" class="select select-bordered w-full">
+              <option value="uz">O‘zbekcha</option>
+              <option value="en">English</option>
+              <option value="ru">Русский</option>
+            </select>
+          </div>
+          <div>
+            <label class="label"><span class="label-text font-bold">O‘yin tezligi (Tetris)</span></label>
+            <select id="set-speed" class="select select-bordered w-full">
+              <option value="slow">Sekin</option>
+              <option value="normal" selected>Normal</option>
+              <option value="fast">Tez</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pt-2 flex gap-3">
+          <button id="set-save-btn" class="btn btn-primary font-bold">Saqlash</button>
+          <button id="set-reset-btn" class="btn btn-outline btn-error">Standartga qaytarish</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  
+  <script src="games.js"></script>
+
+</body>
+</html>
